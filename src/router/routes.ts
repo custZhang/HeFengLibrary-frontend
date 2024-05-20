@@ -6,11 +6,11 @@ import UserRegisterView from "@/views/user/UserRegisterView.vue";
 import AdminView from "@/views/AdminView.vue";
 import NoAuthView from "@/views/NoAuthView.vue";
 import ACCESS_ENUM from "@/access/accessEnum";
-import AddBookView from "@/views/question/AddBookView.vue";
-import ManageBookView from "@/views/question/ManageBookView.vue";
-import BookView from "@/views/question/BookView.vue";
-import BorrowView from "@/views/question/BorrowView.vue";
-import ViewQuestionView from "@/views/question/ViewQuestionView.vue";
+import AddBookView from "@/views/book/AddBookView.vue";
+import ManageBookView from "@/views/book/ManageBookView.vue";
+import BookView from "@/views/book/BookView.vue";
+import BorrowView from "@/views/book/BorrowView.vue";
+import ViewQuestionView from "@/views/book/ViewQuestionView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -48,7 +48,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: "添加图书",
     component: AddBookView,
     meta: {
-      access: ACCESS_ENUM.USER,
+      access: ACCESS_ENUM.ADMIN,
     },
   },
   {

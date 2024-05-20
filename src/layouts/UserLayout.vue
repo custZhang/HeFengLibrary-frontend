@@ -4,7 +4,7 @@
       <a-layout-header class="header">
         <a-space>
           <img src="../assets/oj-logo.png" class="logo" />
-          <div>和风 OJ</div>
+          <div>和风图书馆</div>
         </a-space>
       </a-layout-header>
       <a-layout-content class="content">

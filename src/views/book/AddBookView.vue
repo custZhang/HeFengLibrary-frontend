@@ -59,6 +59,13 @@
           placeholder="请输入分类"
         />
       </a-form-item>
+      <a-form-item field="status" label="状态">
+        <a-input
+          v-model="form.status"
+          style="max-width: 400px"
+          placeholder="请输入状态（0正常，1缺货，2下架）"
+        />
+      </a-form-item>
       <div style="margin-top: 16px" />
       <a-form-item>
         <a-button type="primary" style="min-width: 200px" @click="doSubmit"
@@ -90,6 +97,7 @@ let form = ref({
   price: 0,
   quantity: 0,
   category: "",
+  status: 0,
 });
 
 /**

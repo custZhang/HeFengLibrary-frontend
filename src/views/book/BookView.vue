@@ -159,9 +159,9 @@ const getStatus = (value: number) => {
  * @param question
  */
 const toQuestionPage = async (book: Book) => {
-  // alert(question.acceptNum);
+  // alert(book.acceptNum);
   // router.push({
-  //   path: `/view/question/${question.id}`,
+  //   path: `/view/book/${book.id}`,
   // });
   doborrow.value.bookId = book.id;
   const res = await BookControllerService.doBorrowUsingPost(doborrow.value);

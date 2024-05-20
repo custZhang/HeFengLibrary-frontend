@@ -84,6 +84,9 @@ import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 // import moment from "moment";
 import moment from "moment-timezone";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 const tableRef = ref();
 
@@ -118,45 +121,15 @@ const getStatus = (value: number) => {
   }
 };
 
-// const getStatus = (value: number) => {
-//   switch (value) {
-//     case 0:
-//       return "等待中";
-//     case 1:
-//       return "判题中";
-//     case 2:
-//       return "答案正确";
-//     case 3:
-//       return "执行异常";
-//     case 4:
-//       return "部分错误";
-//     case 5:
-//       return "答案错误";
-//     default:
-//       return "";
-//   }
-// };
-
-// const getColor = (value: number) => {
-//   switch (value) {
-//     case 0:
-//       return "grey";
-//     case 1:
-//       return "cyan";
-//     case 2:
-//       return "green";
-//     case 3:
-//       return "red";
-//     case 4:
-//       return "orangered";
-//     case 5:
-//       return "red";
-//     default:
-//       return "green";
-//   }
-// };
-
 const loadData = async () => {
+  // alert(store.state.user.loginUser.userRole === "user");
+  // 如果只是普通用户，只能查询自己的借阅记录
+  if (
+    store.state.user.loginUser &&
+    store.state.user.loginUser.userRole === "user"
+  ) {
+    searchParams.value.userId = store.state.user.loginUser.id;
+  }
   const res = await BookControllerService.listBorrowByPageUsingPost({
     ...searchParams.value,
     sortField: "borrowDate",
@@ -188,7 +161,7 @@ onMounted(() => {
 
 const columns = [
   {
-    title: "提交号",
+    title: "流水号",
     dataIndex: "id",
   },
   {
@@ -237,9 +210,9 @@ const onPageChange = (page: number) => {
 };
 
 const doreturn = async (book: Book) => {
-  // alert(question.acceptNum);
+  // alert(book.acceptNum);
   // router.push({
-  //   path: `/view/question/${question.id}`,
+  //   path: `/view/book/${book.id}`,
   // });
   const res = await BookControllerService.returnBookUsingPost(book.id);
   // alert(res.message);
