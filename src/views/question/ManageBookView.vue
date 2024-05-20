@@ -76,7 +76,6 @@ const columns = [
   {
     title: "id",
     dataIndex: "id",
-    width: 40,
   },
   {
     title: "书名",
@@ -104,7 +103,6 @@ const columns = [
   {
     title: "价格",
     dataIndex: "price",
-    width: 50,
   },
   {
     title: "库存数量",
