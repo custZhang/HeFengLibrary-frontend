@@ -38,24 +38,13 @@
       column-resizable
       :bordered="{ cell: false }"
     >
-      <!--            <template #judgeInfo="{ record }">-->
-      <!--              <div>-->
-      <!--                {{ JSON.stringify(record.judgeInfo) }}-->
-      <!--              </div>-->
-      <!--            </template>-->
-      <!--            <template #status="{ record }">-->
-      <!--              <a-tooltip :content="record.judgeInfo.message" position="top">-->
-      <!--                <a-tag checkable :color="getColor(record.status)"-->
-      <!--                  >{{ getStatus(record.status) }}-->
-      <!--                </a-tag>-->
-      <!--              </a-tooltip>-->
-      <!--            </template>-->
-      <!--            <template #memory="{ record }">-->
-      <!--              {{ record.judgeInfo.memory ? record.judgeInfo.memory : 0 }} KB-->
-      <!--            </template>-->
-      <!--            <template #time="{ record }">-->
-      <!--              {{ record.judgeInfo.time ? record.judgeInfo.time : 0 }} ms-->
-      <!--            </template>-->
+      <template #isReturned="{ record }">
+        <a-space wrap>
+          <a-tag :color="getColor(record.isReturned)"
+            >{{ getStatus(record.isReturned) }}
+          </a-tag>
+        </a-space>
+      </template>
       <template #borrowDate="{ record }">
         <div>
           <!--          {{ moment(record.createTime).format("YYYY-MM-DD HH:mm") }}-->
@@ -71,16 +60,25 @@
         <div>
           <!--          {{ moment(record.createTime).format("YYYY-MM-DD HH:mm") }}-->
           {{
-            moment
-              // .utc(record.createTime)
-              .tz(record.returnDate, "Asia/Shanghai")
-              .format("YYYY-MM-DD HH:mm")
+            record.returnDate
+              ? moment
+                  // .utc(record.createTime)
+                  .tz(record.returnDate, "Asia/Shanghai")
+                  .format("YYYY-MM-DD HH:mm")
+              : ""
           }}
         </div>
       </template>
       <template #optional="{ record }">
         <a-space>
-          <a-button type="primary" @click="doreturn(record)"> 还书</a-button>
+          <a-button
+            type="primary"
+            @click="doreturn(record)"
+            :disabled="record.isReturned != 0"
+            shape="round"
+          >
+            还书
+          </a-button>
         </a-space>
       </template>
     </a-table>
@@ -109,6 +107,28 @@ const searchParams = ref<BorrowQueryRequest>({
   pageSize: 10,
   current: 1,
 });
+
+const getColor = (value: number) => {
+  switch (value) {
+    case 0:
+      return "red";
+    case 1:
+      return "green";
+    default:
+      return "arcoblue";
+  }
+};
+
+const getStatus = (value: number) => {
+  switch (value) {
+    case 0:
+      return "未归还";
+    case 1:
+      return "已归还";
+    default:
+      return "";
+  }
+};
 
 // const getStatus = (value: number) => {
 //   switch (value) {
