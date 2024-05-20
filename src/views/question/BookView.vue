@@ -8,7 +8,7 @@
         <a-input v-model="searchParams.author" placeholder="请输入作者" />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" @click="doSubmit">搜索</a-button>
+        <a-button type="primary" @click="doSubmit" shape="round">搜索</a-button>
       </a-form-item>
     </a-form>
     <a-divider size="0" />
@@ -24,22 +24,28 @@
       }"
       @page-change="onPageChange"
     >
-      <!--      <template #tags="{ record }">-->
-      <!--        <a-space wrap>-->
-      <!--          <a-tag-->
-      <!--            v-for="(tag, index) of record.tags"-->
-      <!--            :key="index"-->
-      <!--            :color="getColor(tag)"-->
-      <!--            >{{ tag }}-->
+      <template #category="{ record }">
+        <a-space wrap>
+          <a-tag :color="getColor(record.category)"
+            >{{ record.category }}
+          </a-tag>
+        </a-space>
+      </template>
+
+      <template #status="{ record }">
+        <a-space wrap>
+          <a-tag :color="getStatusColor(record.status)"
+            >{{ getStatus(record.status) }}
+          </a-tag>
+        </a-space>
+      </template>
+      <!--      -->
+      <!--      <template #status="{ record }">-->
+      <!--        <a-tooltip :content="record.status" position="top">-->
+      <!--          <a-tag checkable :color="getStatusColor(record.status)"-->
+      <!--            >{{ getStatus(record.status) }}-->
       <!--          </a-tag>-->
-      <!--        </a-space>-->
-      <!--      </template>-->
-      <!--      <template #acceptedRate="{ record }">-->
-      <!--        {{-->
-      <!--          `${(-->
-      <!--            (record.submitNum ? record.acceptNum / record.submitNum : "0") * 100-->
-      <!--          ).toFixed(2)}% [${record.acceptNum}/${record.submitNum}]`-->
-      <!--        }}-->
+      <!--        </a-tooltip>-->
       <!--      </template>-->
 
       <template #publishDate="{ record }">
@@ -47,7 +53,12 @@
       </template>
       <template #optional="{ record }">
         <a-space>
-          <a-button type="primary" @click="toQuestionPage(record)">
+          <a-button
+            type="primary"
+            @click="toQuestionPage(record)"
+            :disabled="record.status != 0"
+            shape="round"
+          >
             借阅
           </a-button>
         </a-space>
@@ -94,16 +105,72 @@ const loadData = async () => {
   // alert(dataList.value[0].author);
 };
 
+const isDisabeled = true;
+
 const getColor = (value: string) => {
   switch (value) {
-    // case "简单":
-    //   return "green";
-    // case "中等":
-    //   return "orangered";
-    // case "困难":
-    //   return "red";
+    case "小说":
+      return "red";
+    case "人文":
+      return "arcoblue";
+    case "教育":
+      return "green";
+    case "艺术":
+      return "cyan";
+    case "生活":
+      return "purple";
+    case "科普":
+      return "magenta";
+    case "儿童":
+      return "pinkpurple";
     default:
       return "arcoblue";
+  }
+};
+
+const getStatusColor = (value: number) => {
+  switch (value) {
+    case 0:
+      return "green";
+    case 1:
+      return "red";
+    case 2:
+      return "grey";
+    default:
+      return "arcoblue";
+  }
+};
+
+const getStatus = (value: number) => {
+  switch (value) {
+    case 0:
+      return "正常";
+    case 1:
+      return "缺货";
+    case 2:
+      return "下架";
+    default:
+      return "";
+  }
+};
+
+/**
+ * 跳转到做题页面
+ * @param question
+ */
+const toQuestionPage = async (book: Book) => {
+  // alert(question.acceptNum);
+  // router.push({
+  //   path: `/view/question/${question.id}`,
+  // });
+  doborrow.value.bookId = book.id;
+  const res = await BookControllerService.doBorrowUsingPost(doborrow.value);
+  // alert(res.message);
+  if (res.code === 0) {
+    message.success("借书成功，记得还书哦~");
+    await loadData();
+  } else {
+    message.error("加载失败，" + res.message);
   }
 };
 
@@ -131,6 +198,7 @@ const columns = [
   {
     title: "书名",
     dataIndex: "title",
+    slotName: "title",
   },
   {
     title: "作者",
@@ -143,6 +211,7 @@ const columns = [
   {
     title: "分类",
     dataIndex: "category",
+    slotName: "category",
   },
   {
     title: "出版日期",
@@ -152,6 +221,11 @@ const columns = [
   {
     title: "库存",
     dataIndex: "quantity",
+  },
+  {
+    title: "状态",
+    dataIndex: "status",
+    slotName: "status",
   },
   {
     slotName: "optional",
@@ -168,25 +242,6 @@ const onPageChange = (page: number) => {
 const router = useRouter();
 
 const doborrow = ref<BorrowAddRequest>({});
-/**
- * 跳转到做题页面
- * @param question
- */
-const toQuestionPage = async (book: Book) => {
-  // alert(question.acceptNum);
-  // router.push({
-  //   path: `/view/question/${question.id}`,
-  // });
-  doborrow.value.bookId = book.id;
-  const res = await BookControllerService.doBorrowUsingPost(doborrow.value);
-  // alert(res.message);
-  if (res.code === 0) {
-    message.success("借书成功，记得还书哦~");
-    await loadData();
-  } else {
-    message.error("加载失败，" + res.message);
-  }
-};
 
 /**
  * 确认搜索，重新加载数据
