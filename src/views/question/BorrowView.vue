@@ -1,8 +1,11 @@
 <template>
   <div id="borrowView">
     <a-form :model="searchParams" layout="inline">
-      <a-form-item field="bookId" label="题号" style="min-width: 240px">
-        <a-input v-model="searchParams.bookId" placeholder="请输入题号" />
+      <a-form-item field="title" label="编号" style="min-width: 240px">
+        <a-input v-model="searchParams.bookId" placeholder="请输入图书编号" />
+      </a-form-item>
+      <a-form-item field="userId" label="学号" style="min-width: 240px">
+        <a-input v-model="searchParams.userId" placeholder="请输入借阅者学号" />
       </a-form-item>
       <!--      <a-form-item field="language" label="编程语言" style="min-width: 240px">-->
       <!--        <a-select-->
@@ -101,8 +104,8 @@ const tableRef = ref();
 const dataList = ref([]);
 const total = ref(0);
 const searchParams = ref<BorrowQueryRequest>({
-  // questionId: undefined,
-  // language: undefined,
+  bookId: undefined,
+  userId: undefined,
   pageSize: 10,
   current: 1,
 });
@@ -181,12 +184,20 @@ const columns = [
     dataIndex: "id",
   },
   {
+    title: "学号",
+    dataIndex: "userVO.id",
+  },
+  {
     title: "借阅者",
     dataIndex: "userVO.userName",
   },
   {
     title: "图书名称",
     dataIndex: "bookVO.title",
+  },
+  {
+    title: "作者",
+    dataIndex: "bookVO.author",
   },
   {
     title: "借书时间",

@@ -1,5 +1,5 @@
 <template>
-  <div id="addQuestionView">
+  <div id="AddBookView">
     <h2>{{ `${updatePage ? "修改图书" : "图书入库"}` }}</h2>
 
     <a-form :model="form" label-align="left">
@@ -86,7 +86,7 @@ let form = ref({
   author: "",
   publisher: "",
   isbn: "",
-  publishDate: "2000-01-01 00:00",
+  publishDate: "2000-01-01",
   price: 0,
   quantity: 0,
   category: "",
@@ -105,7 +105,7 @@ const loadData = async () => {
     form.value = res.data as any;
     form.value.publishDate = moment(form.value.publishDate)
       .tz("Asia/Shanghai")
-      .format("YYYY-MM-DD HH:mm");
+      .format("YYYY-MM-DD");
   } else {
     message.error("加载失败，" + res.message);
   }
@@ -145,6 +145,6 @@ const doSubmit = async () => {
 </script>
 
 <style scoped>
-#addQuestionView {
+#AddBookView {
 }
 </style>

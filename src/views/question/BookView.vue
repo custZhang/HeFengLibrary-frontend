@@ -1,14 +1,14 @@
 <template>
   <div id="booksView">
     <a-form :model="searchParams" layout="inline">
-      <a-form-item field="title" label="名称" style="min-width: 240px">
-        <a-input v-model="searchParams.title" placeholder="请输入名称" />
+      <a-form-item field="title" label="书名" style="min-width: 240px">
+        <a-input v-model="searchParams.title" placeholder="请输入书名" />
       </a-form-item>
-      <a-form-item field="category" label="分类" style="min-width: 240px">
-        <a-input-tag v-model="searchParams.category" placeholder="请输入分类" />
+      <a-form-item field="author" label="作者" style="min-width: 240px">
+        <a-input v-model="searchParams.author" placeholder="请输入作者" />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" @click="doSubmit">提交</a-button>
+        <a-button type="primary" @click="doSubmit">搜索</a-button>
       </a-form-item>
     </a-form>
     <a-divider size="0" />
@@ -76,6 +76,7 @@ const dataList = ref([]);
 const total = ref(0);
 const searchParams = ref<BookQueryRequest>({
   title: "",
+  author: "",
   pageSize: 8,
   current: 1,
 });
@@ -149,6 +150,10 @@ const columns = [
     slotName: "publishDate",
   },
   {
+    title: "库存",
+    dataIndex: "quantity",
+  },
+  {
     slotName: "optional",
   },
 ];
@@ -177,6 +182,7 @@ const toQuestionPage = async (book: Book) => {
   // alert(res.message);
   if (res.code === 0) {
     message.success("借书成功，记得还书哦~");
+    await loadData();
   } else {
     message.error("加载失败，" + res.message);
   }
@@ -195,7 +201,7 @@ const doSubmit = () => {
 </script>
 
 <style scoped>
-#questionsView {
+#BookView {
   max-width: 1280px;
   margin: 0 auto;
 }

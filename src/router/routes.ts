@@ -6,10 +6,10 @@ import UserRegisterView from "@/views/user/UserRegisterView.vue";
 import AdminView from "@/views/AdminView.vue";
 import NoAuthView from "@/views/NoAuthView.vue";
 import ACCESS_ENUM from "@/access/accessEnum";
-import AddQuestionView from "@/views/question/AddQuestionView.vue";
-import ManageQuestionView from "@/views/question/ManageBookView.vue";
-import QuestionsView from "@/views/question/BookView.vue";
-import QuestionSubmitView from "@/views/question/BorrowView.vue";
+import AddBookView from "@/views/question/AddBookView.vue";
+import ManageBookView from "@/views/question/ManageBookView.vue";
+import BookView from "@/views/question/BookView.vue";
+import BorrowView from "@/views/question/BorrowView.vue";
 import ViewQuestionView from "@/views/question/ViewQuestionView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
@@ -34,46 +34,36 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/questions",
+    path: "/books",
     name: "浏览图书",
-    component: QuestionsView,
+    component: BookView,
   },
   {
-    path: "/question_submit",
+    path: "/borrow",
     name: "借阅记录",
-    component: QuestionSubmitView,
+    component: BorrowView,
   },
-  // {
-  //   path: "/view/question/:id",
-  //   name: "在线做题",
-  //   component: ViewQuestionView,
-  //   props: true,
-  //   meta: {
-  //     access: ACCESS_ENUM.USER,
-  //     hideInMenu: true,
-  //   },
-  // },
   {
-    path: "/add/question",
+    path: "/add/book",
     name: "添加图书",
-    component: AddQuestionView,
+    component: AddBookView,
     meta: {
       access: ACCESS_ENUM.USER,
     },
   },
   {
-    path: "/update/question",
+    path: "/update/book",
     name: "更新图书",
-    component: AddQuestionView,
+    component: AddBookView,
     meta: {
       access: ACCESS_ENUM.USER,
       hideInMenu: true,
     },
   },
   {
-    path: "/manage/question/",
+    path: "/manage/book/",
     name: "管理图书",
-    component: ManageQuestionView,
+    component: ManageBookView,
     meta: {
       access: ACCESS_ENUM.ADMIN,
     },
@@ -81,7 +71,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "主页",
-    component: QuestionsView,
+    component: BookView,
   },
   // {
   //   path: "/hide",

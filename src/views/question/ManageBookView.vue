@@ -142,7 +142,7 @@ const router = useRouter();
 
 const doUpdate = (book: Book) => {
   router.push({
-    path: "/update/question",
+    path: "/update/book",
     query: {
       id: book.id,
     },
@@ -151,6 +151,6 @@ const doUpdate = (book: Book) => {
 </script>
 
 <style scoped>
-#manageQuestionView {
+#ManageBookView {
 }
 </style>
